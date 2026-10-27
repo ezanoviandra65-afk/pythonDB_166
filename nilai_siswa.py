@@ -1,7 +1,17 @@
 import tkinter as tk
 from tkinter import messagebox
 import sqlite3
-
+ 
+# Warna tema
+BG = "#2b2d4f"        # latar jendela
+ENTRY_BG = "#7c80ea"  # kolom input
+TOMBOL = "#8f93f7"    # tombol (kondisi normal)
+PINK = "#ff6ec7"      # judul
+ 
+ 
+# ---------------------------------------------------------------
+# DATABASE
+# ---------------------------------------------------------------
 def create_db():
     conn = sqlite3.connect("nilai_siswa.db")
     cursor = conn.cursor()
@@ -18,8 +28,13 @@ def create_db():
     conn.commit()
     conn.close()
  
+ 
 create_db()
-
+ 
+ 
+# ---------------------------------------------------------------
+# LOGIKA PREDIKSI
+# ---------------------------------------------------------------
 def prediksi_fakultas(biologi, fisika, inggris):
     if biologi > fisika and biologi > inggris:
         return "Kedokteran"
@@ -29,4 +44,92 @@ def prediksi_fakultas(biologi, fisika, inggris):
         return "Bahasa"
     else:
         return "Tidak Dapat Ditentukan"
+ 
+ 
+def submit_nilai():
+    nama = entry_nama.get().strip()
+ 
+    try:
+        bio = int(entry_bio.get())
+        fis = int(entry_fis.get())
+        ing = int(entry_ing.get())
+    except ValueError:
+        messagebox.showerror("Error", "Nilai harus berupa angka!")
+        return
+ 
+    if not nama:
+        messagebox.showerror("Error", "Nama siswa tidak boleh kosong!")
+        return
+ 
+    hasil_prediksi = prediksi_fakultas(bio, fis, ing)
+ 
+    conn = sqlite3.connect("nilai_siswa.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO nilai_siswa (nama_siswa, biologi, fisika, inggris, prediksi_fakultas)
+        VALUES (?, ?, ?, ?, ?)
+    """, (nama, bio, fis, ing, hasil_prediksi))
+    conn.commit()
+    conn.close()
+ 
+    messagebox.showinfo("Hasil Prediksi", f"Prediksi Fakultas: {hasil_prediksi}")
+ 
+    entry_nama.delete(0, tk.END)
+    entry_bio.delete(0, tk.END)
+    entry_fis.delete(0, tk.END)
+    entry_ing.delete(0, tk.END)
+ 
+ 
+def on_enter(e):
+    btn_submit["bg"] = "#50fa7b"
+    btn_submit["fg"] = "black"
+ 
+ 
+def on_leave(e):
+    btn_submit["bg"] = TOMBOL
+    btn_submit["fg"] = "black"
+ 
+ 
 
+root = tk.Tk()
+root.title("Prediksi Fakultas Siswa")
+root.geometry("400x440")
+root.configure(bg=BG)
+root.resizable(False, False)
+ 
+
+tk.Label(
+    root, text="🎓 Prediksi Fakultas", bg=BG, fg=PINK,
+    font=("Arial", 16, "bold"),
+).pack(pady=(20, 15))
+ 
+ 
+def buat_input(teks):
+    
+    tk.Label(
+        root, text=teks, bg=BG, fg="white", font=("Arial", 10, "bold")
+    ).pack(pady=(6, 0))
+    entry = tk.Entry(
+        root, width=32, bg=ENTRY_BG, fg="white", insertbackground="white",
+        relief="flat", font=("Arial", 10), justify="center",
+    )
+    entry.pack(ipady=4, pady=(2, 0))
+    return entry
+ 
+ 
+
+entry_nama = buat_input("Nama Siswa")
+entry_bio = buat_input("Nilai Biologi")
+entry_fis = buat_input("Nilai Fisika")
+entry_ing = buat_input("Nilai Inggris")
+ 
+btn_submit = tk.Button(
+    root, text="Submit Nilai", command=submit_nilai, bg=TOMBOL, fg="black",
+    relief="flat", width=24, font=("Arial", 10, "bold"), cursor="hand2",
+)
+btn_submit.pack(pady=(25, 10), ipady=5)
+ 
+btn_submit.bind("<Enter>", on_enter)
+btn_submit.bind("<Leave>", on_leave)
+ 
+root.mainloop()
