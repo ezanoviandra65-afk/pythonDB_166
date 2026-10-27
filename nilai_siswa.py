@@ -94,3 +94,8 @@ root.title("Prediksi Fakultas Siswa")
 root.geometry("400x440")
 root.configure(bg=BG)
 root.resizable(False, False)
+
+tk.Label(
+    root, text="🎓 Prediksi Fakultas", bg=BG, fg=PINK,
+    font=("Arial", 16, "bold"),
+).pack(pady=(20, 15))
