@@ -112,3 +112,9 @@ def buat_input(teks):
     entry.pack(ipady=4, pady=(2, 0))
     return entry
 
+entry_nama = buat_input("Nama Siswa")
+entry_bio = buat_input("Nilai Biologi")
+entry_fis = buat_input("Nilai Fisika")
+entry_ing = buat_input("Nilai Inggris")
+
+
