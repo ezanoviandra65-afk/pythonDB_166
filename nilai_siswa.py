@@ -117,4 +117,16 @@ entry_bio = buat_input("Nilai Biologi")
 entry_fis = buat_input("Nilai Fisika")
 entry_ing = buat_input("Nilai Inggris")
 
+btn_submit = tk.Button(
+    root, text="Submit Nilai", command=submit_nilai, bg=TOMBOL, fg="black",
+    relief="flat", width=24, font=("Arial", 10, "bold"), cursor="hand2",
+)
+btn_submit.pack(pady=(25, 10), ipady=5)
+ 
+# Pasang efek hover
+btn_submit.bind("<Enter>", on_enter)
+btn_submit.bind("<Leave>", on_leave)
+ 
+root.mainloop()
+
 
