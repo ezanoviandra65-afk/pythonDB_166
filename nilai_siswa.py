@@ -83,3 +83,7 @@ def submit_nilai():
 def on_enter(e):
     btn_submit["bg"] = "#50fa7b"
     btn_submit["fg"] = "black"
+
+def on_leave(e):
+    btn_submit["bg"] = TOMBOL
+    btn_submit["fg"] = "black"
