@@ -87,3 +87,10 @@ def on_enter(e):
 def on_leave(e):
     btn_submit["bg"] = TOMBOL
     btn_submit["fg"] = "black"
+
+
+root = tk.Tk()
+root.title("Prediksi Fakultas Siswa")
+root.geometry("400x440")
+root.configure(bg=BG)
+root.resizable(False, False)
