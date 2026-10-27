@@ -99,3 +99,16 @@ tk.Label(
     root, text="🎓 Prediksi Fakultas", bg=BG, fg=PINK,
     font=("Arial", 16, "bold"),
 ).pack(pady=(20, 15))
+
+def buat_input(teks):
+    """Buat satu label + entry, lalu kembalikan entry-nya."""
+    tk.Label(
+        root, text=teks, bg=BG, fg="white", font=("Arial", 10, "bold")
+    ).pack(pady=(6, 0))
+    entry = tk.Entry(
+        root, width=32, bg=ENTRY_BG, fg="white", insertbackground="white",
+        relief="flat", font=("Arial", 10), justify="center",
+    )
+    entry.pack(ipady=4, pady=(2, 0))
+    return entry
+
